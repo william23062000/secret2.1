@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>¿Puedo ser tu novio?</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff0f5;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 4em;
+      color: black;
+      margin-bottom: 20px;
+      z-index: 2;
+    }
+
+    .buttons {
+      z-index: 2;
+    }
+
+    button {
+      padding: 30px 60px;
+      font-size: 2em;
+      margin: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border-radius: 15px;
+      border: none;
+      background-color: #ff69b4;
+      color: white;
+      position: relative;
+    }
+
+    #message {
+      margin-top: 40px;
+      font-size: 2em;
+      color: #ff69b4;
+      display: none;
+      z-index: 2;
+    }
+
+    .heart {
+      position: absolute;
+      animation: floatUp 6s linear forwards;
+      font-size: 60px;
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-100vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>¿Puedo ser tu novio?</h1>
+  <div class="buttons">
+    <button id="yesBtn">Sí</button>
+    <button id="noBtn">No</button>
+  </div>
+  <div id="message">Me encanta que tu respuesta sea sí, te amo mucho ❤️</div>
+
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const message = document.getElementById('message');
+
+    function crearCorazon(x = null, y = null) {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.innerHTML = '💖';
+
+      const size = Math.random() * 30 + 40;
+      heart.style.fontSize = size + 'px';
+      heart.style.color = ["#ffb6c1", "#dda0dd", "#ff69b4", "#e6a8d7", "#c71585"][Math.floor(Math.random() * 5)];
+      heart.style.opacity = 0.4 + Math.random() * 0.4;
+
+      heart.style.left = x !== null ? x + 'px' : Math.random() * window.innerWidth + 'px';
+      heart.style.bottom = y !== null ? y + 'px' : '0px';
+
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+
+    // Corazones flotantes constantes
+    setInterval(() => crearCorazon(), 200);
+
+    yesBtn.addEventListener('click', () => {
+      message.style.display = 'block';
+
+      // Muchos corazones desde todos lados
+      for (let i = 0; i < 100; i++) {
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * 200;
+        crearCorazon(x, y);
+      }
+    });
+
+    // Hacer que el botón "No" se mueva aleatoriamente
+    noBtn.addEventListener('mouseover', () => {
+      const newX = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const newY = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = `${newX}px`;
+      noBtn.style.top = `${newY}px`;
+
+      // Agrandar el botón "Sí"
+      let yesSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+      yesBtn.style.fontSize = (yesSize + 6) + "px";
+    });
+
+    // Si llega a hacer clic en "No", se comporta como "Sí"
+    noBtn.addEventListener('click', () => {
+      yesBtn.click(); // Simula click al sí
+    });
+  </script>
+</body>
+</html>
